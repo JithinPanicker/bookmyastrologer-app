@@ -1,5 +1,5 @@
 // BMA Customer & Astrologer App - Service Worker
-const CACHE_NAME = 'bma-user-astro-v1';
+const CACHE_NAME = 'bma-user-astro-final';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',

@@ -1,7 +1,7 @@
 {
-  "name": "BookMy Astrologer App",
+  "name": "BookMy Astrologer",
   "short_name": "BookMyAstro",
-  "description": "Kerala's Premier Jyothisha Portal - Customer & Astrologer",
+  "description": "Kerala's Premier Jyothisha Portal",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

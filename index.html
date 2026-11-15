@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BookMy Astrologer Kerala</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Noto+Sans+Malayalam:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['"Plus Jakarta Sans"', '"Noto Sans Malayalam"', 'sans-serif'], serif: ['"Cinzel"', '"Noto Sans Malayalam"', 'serif'], ml: ['"Noto Sans Malayalam"', 'sans-serif'] },
+          colors: {
+            midnight: { 950: '#070B19', 900: '#0D132B', 800: '#151E42', 700: '#1F2C5C' },
+            kasavu: { 300: '#FDE68A', 400: '#FBBF24', 500: '#D4AF37', 600: '#B48811', 700: '#8A6508' },
+            saffron: { 400: '#FB923C', 500: '#F59E0B', 600: '#D97706' },
+            ivory: { 50: '#FFFDF7', 100: '#FDF8E7', 200: '#F7EED0' }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .kasavu-strip { background: repeating-linear-gradient(90deg, #D4AF37 0px, #D4AF37 14px, #FFFDF7 14px, #FFFDF7 18px, #F59E0B 18px, #F59E0B 22px, #FFFDF7 22px, #FFFDF7 26px); }
+    .glass-midnight { background: rgba(13, 19, 43, 0.85); backdrop-filter: blur(12px); }
+  </style>
+</head>
+<body class="bg-ivory-50 text-slate-900 font-sans antialiased min-h-screen flex flex-col">
+
+  <!-- Toast & Modal -->
+  <div id="toast-container" class="fixed bottom-5 right-5 z-[100] flex flex-col gap-2.5 max-w-sm pointer-events-none"></div>
+
+  <!-- ===================================================================== -->
+  <!-- LOGIN GATEWAY (The First Screen)                                      -->
+  <!-- ===================================================================== -->
+  <div id="login-gateway" class="fixed inset-0 z-50 bg-midnight-950 flex items-center justify-center p-4">
+    <div class="bg-ivory-50 rounded-3xl max-w-md w-full p-8 shadow-2xl relative overflow-hidden text-center border-2 border-kasavu-500">
+      <div class="absolute top-0 inset-x-0 h-2 kasavu-strip"></div>
+      
+      <div class="w-20 h-20 mx-auto bg-midnight-950 rounded-2xl flex items-center justify-center text-kasavu-400 text-4xl shadow-lg mb-4">
+        <i class="fa-solid fa-om"></i>
+      </div>
+      <h1 class="font-serif text-3xl font-extrabold text-midnight-950 mb-1">BookMy Astrologer</h1>
+      <p class="text-sm text-slate-500 mb-8">Kerala's Premier Jyothisha Portal</p>
+
+      <!-- BIG BUTTON: Customer Login -->
+      <button onclick="handleLogin('customer')" class="w-full py-4 rounded-xl bg-gradient-to-r from-kasavu-500 to-saffron-500 hover:from-kasavu-400 hover:to-saffron-400 text-midnight-950 font-extrabold text-lg shadow-xl transition transform hover:scale-[1.02] cursor-pointer mb-4">
+        <i class="fa-solid fa-user mr-2"></i>Login as Customer
+      </button>
+
+      <div class="flex items-center gap-3 mb-4">
+        <div class="flex-1 h-px bg-slate-300"></div>
+        <span class="text-xs font-bold text-slate-400 uppercase">OR</span>
+        <div class="flex-1 h-px bg-slate-300"></div>
+      </div>
+
+      <!-- SMALL LINK: Astrologer Login -->
+      <button onclick="handleLogin('partner')" class="text-sm font-bold text-midnight-700 hover:text-kasavu-600 underline cursor-pointer">
+        Login as Astrologer / Jyothishi Partner
+      </button>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- MAIN APP CONTAINER (Hidden until login)                               -->
+  <!-- ===================================================================== -->
+  <div id="main-app" class="hidden flex-col min-h-screen">
+    
+    <!-- TOP BAR (Visible after login) -->
+    <header class="sticky top-0 z-40 glass-midnight text-white border-b border-kasavu-500/40 shadow-xl">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex justify-between items-center">
+        <div class="flex items-center gap-2 bg-midnight-950 border border-kasavu-500/40 rounded-xl px-3 py-1.5 text-xs font-mono">
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span id="simulated-domain-url" class="text-kasavu-300 font-semibold">https://bookmyastrologer.kerala</span>
+        </div>
+        
+        <div class="flex items-center gap-3">
+          <!-- Customer Wallet (Visible only to customer) -->
+          <div id="top-wallet-pill" class="hidden items-center gap-2 bg-midnight-800 border border-kasavu-500/40 rounded-xl px-3 py-1.5 text-xs">
+            <i class="fa-solid fa-wallet text-kasavu-400"></i>
+            <span class="text-slate-300 hidden sm:inline">Wallet:</span>
+            <span id="global-wallet-balance" class="font-extrabold text-white">₹650</span>
+          </div>
+          
+          <!-- Logout Button -->
+          <button onclick="handleLogout()" class="px-3 py-1.5 rounded-lg bg-rose-600/20 text-rose-400 text-xs font-bold border border-rose-500/30 hover:bg-rose-600/40 transition cursor-pointer">
+            <i class="fa-solid fa-power-off mr-1"></i>Logout
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- ===================================================================== -->
+    <!-- PORTAL 1: CUSTOMER APP (Visible when customer logs in)                -->
+    <!-- ===================================================================== -->
+    <main id="portal-customer" class="portal-section hidden flex-grow flex-col">
+      <div class="bg-midnight-900 text-white border-b border-kasavu-500/30">
+        <div class="max-w-7xl mx-auto px-4 py-3.5 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+          <div class="flex items-center gap-3">
+            <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-kasavu-400 to-saffron-600 flex items-center justify-center text-midnight-950 shadow-lg shrink-0">
+              <i class="fa-solid fa-dharmachakra text-2xl"></i>
+            </div>
+            <div>
+              <span class="font-serif text-lg sm:text-2xl font-extrabold text-ivory-50 block">BookMy Astrologer</span>
+              <p class="text-[11px] text-slate-300 font-ml">കേരളത്തിലെ പ്രമുഖ ജ്യോതിഷികൾ</p>
+            </div>
+          </div>
+          <!-- Customer Nav -->
+          <nav class="flex items-center gap-1.5 overflow-x-auto">
+            <button data-cnav="feed" class="cnav-btn px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap bg-kasavu-500 text-midnight-950 shadow cursor-pointer">Astrologers</button>
+            <button data-cnav="booking" class="cnav-btn px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap text-slate-200 hover:bg-midnight-800 cursor-pointer">Book Slot</button>
+            <button data-cnav="mybookings" class="cnav-btn px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap text-slate-200 hover:bg-midnight-800 cursor-pointer">My Bookings</button>
+          </nav>
+        </div>
+      </div>
+
+      <section id="cview-feed" class="cview-panel flex-grow">
+        <div class="max-w-7xl mx-auto px-4 py-8">
+          <div class="mb-6">
+            <h1 class="font-serif text-3xl font-extrabold text-midnight-950">Consult Verified Jyothishis</h1>
+            <p class="text-sm text-slate-600 mt-1">Connect instantly via live chat or book a chamber visit.</p>
+          </div>
+          <div id="customer-astrologer-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+        </div>
+      </section>
+    </main>
+
+    <!-- ===================================================================== -->
+    <!-- PORTAL 2: ASTROLOGER PARTNER (Visible when partner logs in)           -->
+    <!-- ===================================================================== -->
+    <main id="portal-partner" class="portal-section hidden flex-grow flex-col">
+      <div class="bg-gradient-to-r from-midnight-950 to-amber-950 text-white border-b border-kasavu-500/40 p-4">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-kasavu-500 text-midnight-950 flex items-center justify-center font-bold"><i class="fa-solid fa-om text-xl"></i></div>
+            <div>
+              <span class="font-serif text-xl font-bold text-ivory-50 block">Jyothishi Partner Desk</span>
+              <span class="text-[11px] text-kasavu-300">Manage your practice</span>
+            </div>
+          </div>
+          <div class="flex gap-2">
+            <button class="px-3 py-1 rounded-lg text-xs font-extrabold bg-emerald-500 text-midnight-950">Online</button>
+            <button class="px-3 py-1 rounded-lg text-xs font-extrabold bg-slate-800 text-slate-300">Offline</button>
+          </div>
+        </div>
+      </div>
+      
+      <div class="max-w-7xl mx-auto px-4 py-8 w-full">
+        <div class="bg-white rounded-2xl p-6 border border-kasavu-200 shadow-sm">
+          <h2 class="font-serif text-xl font-bold text-midnight-950 mb-4">My Profile & Slot Builder</h2>
+          <p class="text-sm text-slate-600 mb-4">Welcome back, Acharya! Here you can create slots for customers.</p>
+          <button onclick="showToast('Slot builder opens here (Coming in Day 9)')" class="px-4 py-2 bg-midnight-900 text-kasavu-300 rounded-xl font-bold text-sm">+ Create New Slot</button>
+        </div>
+      </div>
+    </main>
+
+  </div>
+
+  <script>
+    // ==========================================
+    // CORE STATE & MOCK DATA
+    // ==========================================
+    const mockAstrologers = [
+      { id: 1, name: 'Acharya Kottarathil Sankaran', spec: 'Vedic', city: 'Thrissur', rating: 4.98, rate: 30, photo: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=240&q=80' },
+      { id: 2, name: 'Jyothishi Parvathy Amma', spec: 'Porutham', city: 'Kottayam', rating: 4.95, rate: 25, photo: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=240&q=80' },
+      { id: 3, name: 'Acharya Hariharan Pillai', spec: 'Vastu', city: 'Trivandrum', rating: 4.93, rate: 35, photo: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=240&q=80' }
+    ];
+
+    let currentRole = null;
+
+    // ==========================================
+    // AUTHENTICATION LOGIC
+    // ==========================================
+    function handleLogin(role) {
+      currentRole = role;
+      
+      // Hide Login Gateway, Show Main App
+      document.getElementById('login-gateway').classList.add('hidden');
+      const mainApp = document.getElementById('main-app');
+      mainApp.classList.remove('hidden');
+      mainApp.classList.add('flex');
+
+      // Show relevant portal
+      document.querySelectorAll('.portal-section').forEach(p => p.classList.add('hidden'));
+      document.getElementById(`portal-${role}`).classList.remove('hidden');
+      document.getElementById(`portal-${role}`).classList.add('flex');
+
+      // Toggle specific UI elements
+      if (role === 'customer') {
+        document.getElementById('top-wallet-pill').classList.remove('hidden');
+        document.getElementById('top-wallet-pill').classList.add('flex');
+        renderCustomerAstrologers();
+      } else {
+        document.getElementById('top-wallet-pill').classList.add('hidden');
+        document.getElementById('top-wallet-pill').classList.remove('flex');
+      }
+
+      showToast(`Successfully logged in as ${role === 'customer' ? 'Customer' : 'Astrologer'}`);
+    }
+
+    function handleLogout() {
+      currentRole = null;
+      document.getElementById('login-gateway').classList.remove('hidden');
+      const mainApp = document.getElementById('main-app');
+      mainApp.classList.add('hidden');
+      mainApp.classList.remove('flex');
+      showToast('Logged out securely.');
+    }
+
+    // ==========================================
+    // UI RENDERING
+    // ==========================================
+    function renderCustomerAstrologers() {
+      const grid = document.getElementById('customer-astrologer-grid');
+      if (!grid) return;
+
+      grid.innerHTML = mockAstrologers.map(astro => `
+        <article class="bg-white rounded-2xl border border-kasavu-200 shadow-sm hover:shadow-xl transition-all flex flex-col justify-between overflow-hidden">
+          <div class="p-5">
+            <div class="flex items-center justify-between mb-3">
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-emerald-200 bg-emerald-50 text-emerald-700 text-[11px] font-bold">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Online
+              </span>
+              <span class="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full"><i class="fa-solid fa-circle-check"></i> Verified</span>
+            </div>
+            <div class="flex items-start gap-3.5">
+              <img src="${astro.photo}" class="w-16 h-16 rounded-2xl object-cover border-2 border-kasavu-400" />
+              <div>
+                <h3 class="font-serif text-lg font-bold text-midnight-950">${astro.name}</h3>
+                <p class="text-xs text-kasavu-700 font-bold">${astro.spec} • ${astro.city}</p>
+                <p class="text-xs text-amber-600 font-bold mt-1">${astro.rating} ★</p>
+              </div>
+            </div>
+          </div>
+          <div class="px-5 py-3 bg-ivory-100 border-t border-kasavu-200 grid grid-cols-2 gap-2">
+            <button onclick="showToast('Live chat activated!')" class="py-2.5 rounded-xl bg-emerald-600 text-white text-xs font-bold">Chat (₹${astro.rate}/m)</button>
+            <button onclick="showToast('Booking calendar activated!')" class="py-2.5 rounded-xl bg-midnight-900 text-kasavu-300 text-xs font-bold">Book Slot</button>
+          </div>
+        </article>
+      `).join('');
+    }
+
+    function showToast(msg) {
+      const container = document.getElementById('toast-container');
+      const el = document.createElement('div');
+      el.className = 'pointer-events-auto flex items-center gap-2.5 px-4 py-3 rounded-xl border shadow-2xl text-xs sm:text-sm font-medium bg-midnight-950 border-kasavu-400 text-white';
+      el.innerHTML = `<i class="fa-solid fa-circle-check text-kasavu-400"></i><span>${msg}</span>`;
+      container.appendChild(el);
+      setTimeout(() => { el.style.opacity = '0'; setTimeout(() => el.remove(), 300); }, 3000);
+    }
+  </script>
+</body>
+</html>

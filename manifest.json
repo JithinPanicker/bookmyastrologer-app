@@ -1,0 +1,18 @@
+{
+  "name": "BookMy Astrologer App",
+  "short_name": "BookMyAstro",
+  "description": "Kerala's Premier Jyothisha Portal - Customer & Astrologer",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#FFFDF7",
+  "theme_color": "#070B19",
+  "icons": [
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48cmVjdCB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgcng9IjExMiIgZmlsbD0iIzA3MEIxOSIvPjxjaXJjbGUgY3g9IjI1NiIgY3k9IjI4MCIgcj0iMTA0IiBmaWxsPSIjRkJCQjI0Ii8+PGNpcmNsZSBjeD0iMzAwIiBjeT0iMjQ0IiByPSI4MiIgZmlsbD0iIzA3MEIxOSIvPjxwYXRoIGQ9Ik0yNTYgOTZsMTIgMzIgMzIgMTItMzIgMTItMTIgMzItMTItMzItMzItMTIgMzItMTJ6IiBmaWxsPSIjRkJCQjI0Ii8+PC9zdmc+",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
